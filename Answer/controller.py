@@ -1,4 +1,5 @@
 from DualSense import DualSenseController
+from pydualsense import TriggerModes
 import time
 from xarm.wrapper import XArmAPI
 
@@ -10,8 +11,6 @@ speed = 10 #モーターのスピードを設定する。
 
 
 def init():
-        
-    
     arm.set_mode(1) #サーボモードに設定する。
     arm.set_state(0)
 
@@ -74,51 +73,97 @@ def SetPosition(x,y,z,roll,pitch,yaw):
         vibration_on=True
         on_change_vibration_state = True
 
+try:
+    while not dualsense.state.touchBtn: 
+        
+        left_joy = dualsense.get_joystick_left_val()
+        # right_joy = dualsense.get_joystick_right_val() 
 
-while not dualsense.state.touchBtn: 
-    
-    left_joy = dualsense.get_joystick_left_val()
-    right_joy = dualsense.get_joystick_right_val() 
+        dirX = left_joy[1]
+        dirY = left_joy[0]
+      
+        dirZ = 0
+        if dualsense.state.R1:
+            dirZ += 8  # 上昇
+        if dualsense.state.L1:
+            dirZ -= 8  # 下降
+        
 
-    dirX = left_joy[1]
-    dirY = left_joy[0]
-    dirZ = -right_joy[1]
-    
-
-    
-    _, position  = arm.get_position()
-    x,y,z,roll,pitch,yaw = position
-    SetPosition(x+dirX,y+dirY,z+dirZ,roll,pitch,yaw)
-
-
-    # 処理が反映される間隔を指定
-    time.sleep(0.05)
-
-    if arm.has_error:
-
-        init() 
-        time.sleep(1)
+        
+        _, position  = arm.get_position()
+        x,y,z,roll,pitch,yaw = position
+        SetPosition(x+dirX,y+dirY,z+dirZ,roll,pitch,yaw)
 
 
-    if dualsense.state.R1:
-        OperateGripper()
-        dualsense.light.setColorI(0,255,0)
-    
+        # 処理が反映される間隔を指定
+        time.sleep(0.05)
 
-    if on_change_vibration_state:
+        if arm.has_error:
 
-        if vibration_on: 
-            dualsense.setLeftMotor(200)
-            dualsense.setRightMotor(200)
-            dualsense.light.setColorI(255,0,0)
+            init() 
+            time.sleep(1)
+
+
+        # if dualsense.state.R2:
+        #     OperateGripper()
+        #     dualsense.light.setColorI(0,255,0)
+
+        # ======================= グリッパ操作 =========================
+        # 
+        r2_value = dualsense.state.R2_value  # 0〜250 を仮定
+        gripper_val = (1 - r2_value / 250) * 3
+
+        # 0未満は 0 にクリップ
+        if gripper_val < 0:
+            gripper_val = 0
+
+        # gripper_val から 実際のグリッパー位置（800〜350）にマッピング
+        # 仮に 800: 全開, 350: 閉じる
+        gripper_pos = int(350 + gripper_val * ((800 - 350) / 3))
+
+        print(f"gripper_val: {gripper_val:.2f} → position: {gripper_pos}")
+        dualsense.triggerR.setMode(TriggerModes.Rigid_AB)
+        dualsense.triggerR.setForce(0, 255)
+        # 段階的にR2を重くする
+        if gripper_pos <= 370:
+            if gripper_pos <= 350:
+                # 完全に閉じたら動かさず、最大抵抗
+                dualsense.triggerR.setForce(0, 255)
+                print("MAX grip: hold at 350")
+                gripper_pos = 350  # 強制的に350に設定  
+            else:
+                dualsense.triggerR.setForce(0, 255)  # 強めの抵抗
+        elif gripper_pos <= 400:
+            dualsense.triggerR.setForce(0, 180)  # 軽めの抵抗
         else:
-            dualsense.setLeftMotor(0)
-            dualsense.setRightMotor(0)
-            dualsense.light.setColorI(0,0,255)
+            dualsense.triggerR.setForce(0, 0)  # 抵抗オフ（開いてる）
 
-        on_change_vibration_state = False
-arm.disconnect()
-dualsense.close()
+        # グリッパー位置を更新
+        arm.set_gripper_position(gripper_pos, wait=False)
 
 
 
+
+
+        if on_change_vibration_state:
+
+            if vibration_on: 
+                dualsense.setLeftMotor(200)
+                dualsense.setRightMotor(200)
+                dualsense.light.setColorI(255,0,0)
+            else:
+                dualsense.setLeftMotor(0)
+                dualsense.setRightMotor(0)
+                dualsense.light.setColorI(0,0,255)
+
+            on_change_vibration_state = False
+
+
+        if dualsense.state.ps:
+            arm.disconnect() 
+            dualsense.close()
+            print("Exit requested.")
+            break
+finally:
+    arm.disconnect()
+    dualsense.close()
