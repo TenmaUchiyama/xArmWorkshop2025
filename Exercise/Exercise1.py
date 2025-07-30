@@ -61,11 +61,7 @@ def main():
     z = 200
 
     #移動先がワークスペース内か調べる
-    if CheckIfNewPositionInWorkspace(x,y,z):
-        print("Moving")
-        arm.set_position(x,y,z, speed= speed, wait=True )
-    else: 
-        print("Position is out of workspace")
+    move(x,y,z)
     
     time.sleep(1) # 移動後に1秒待つ
     z=z+100
