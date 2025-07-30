@@ -60,18 +60,20 @@ def main():
         arm.set_position(x,y,z, speed= speed, wait=True )
     else: 
         print("Position is out of workspace")
+        
+    arm.set_position(500,-100,300, speed, True)
     
     time.sleep(1) # 移動後に1秒待つ
 
-
+    arm.set_position(500,0,300, speed, True)
     
     time.sleep(1) # 移動後に1秒待つ
 
-
+    arm.set_position(500,0,200, speed, True)
     
     time.sleep(1) # 移動後に1秒待つ
-
-
+    
+    arm.set_position(500,-100,200, speed, True)
     
     time.sleep(1) # 移動後に1秒待つ
 
