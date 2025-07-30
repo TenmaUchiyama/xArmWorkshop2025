@@ -91,20 +91,42 @@ def main():
     isKeyPressed = False
 
     while True:
+        _,current_position = arm.get_position() #現在のアームの位置を取得する。 return: [x,y,z,roll,pitch,yaw]
+        x,y,z,roll,pitch,yaw = current_position #展開して各変数に代入する。
+
+        if keyboard.is_pressed('up'): # 下矢印キーが押されたときの処理
+            print("up key pressed")
+            z += 5
 
         if keyboard.is_pressed('down'): # 下矢印キーが押されたときの処理
-           print("down key pressed")
+            print("down key pressed")
+            z -= 5
      
         if keyboard.is_pressed('w'): # wキーが押されたときの処理
             print("w key pressed")
+            x += 5
+
+        if keyboard.is_pressed('s'): # wキーが押されたときの処理
+            print("w key pressed")
+            x -= 5
+
+        if keyboard.is_pressed('a'): # wキーが押されたときの処理
+            print("w key pressed")
+            y -= 5
+
+        if keyboard.is_pressed('d'): # wキーが押されたときの処理
+            print("w key pressed")
+            y += 5
 
         if keyboard.is_pressed('space'): # スペースキーが押されたときの処理
             print("space key pressed")
-    
+            OperateGripper()
 
         if keyboard.is_pressed('esc'): # escキーが押されたときの処理
             print("Exiting...")
             break
+        
+        SetPosition(x,y,z,roll,pitch,yaw)
 
         # 処理が反映される間隔を指定
         time.sleep(0.05)
