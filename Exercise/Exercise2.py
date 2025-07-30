@@ -36,7 +36,7 @@ Dキーを押すと、ロボットアームがy軸方向に5mm(右)に移動し�
 
 arm = XArmAPI("192.168.1.199") #IP指定してロボットアームと接続。
 
-speed = 10 #モーターのスピードを設定する。
+speed = 20 #モーターのスピードを設定する。
 arm.set_mode(1) #サーボモードに設定する。
 arm.set_state(0)
 
@@ -89,19 +89,44 @@ def SetPosition(x,y,z,roll,pitch,yaw):
 
 def main():
     isKeyPressed = False
+    
+    x = 500
+    y = -100 
+    z = 200
+    roll = 0
+    pitch = 0
+    yaw = 0
 
     while True:
 
         if keyboard.is_pressed('down'): # 下矢印キーが押されたときの処理
            print("down key pressed")
+           SetPosition(x,y,z-5,roll,pitch,yaw)
+           
+        if keyboard.is_pressed('up'): # 上矢印キーが押されたときの処理
+           print("up key pressed")
+           SetPosition(x,y,z+5,roll,pitch,yaw)
      
         if keyboard.is_pressed('w'): # wキーが押されたときの処理
             print("w key pressed")
+            SetPosition(x+5,y,z,roll,pitch,yaw)
+            
+        if keyboard.is_pressed('s'): # wキーが押されたときの処理
+            print("s key pressed")
+            SetPosition(x-5,y,z,roll,pitch,yaw)
+            
+        if keyboard.is_pressed('d'): # wキーが押されたときの処理
+            print("w key pressed")
+            SetPosition(x,y+5,z,roll,pitch,yaw)
+            
+        if keyboard.is_pressed('a'): # wキーが押されたときの処理
+            print("s key pressed")
+            SetPosition(x,y-5,z,roll,pitch,yaw)
 
         if keyboard.is_pressed('space'): # スペースキーが押されたときの処理
             print("space key pressed")
+            OperateGripper()
     
-
         if keyboard.is_pressed('esc'): # escキーが押されたときの処理
             print("Exiting...")
             break
