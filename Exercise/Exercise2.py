@@ -94,12 +94,68 @@ def main():
 
         if keyboard.is_pressed('down'): # 下矢印キーが押されたときの処理
            print("down key pressed")
+           _,current_position = arm.get_position() #現在のアームの位置を取得する。 return: [x,y,z,roll,pitch,yaw]
+           x,y,z,roll,pitch,yaw = current_position #展開して各変数に代入する。
+           z -= 5 
+           if CheckIfNewPositionInWorkspace(x,y,z): #新しい値がworkspaceに存在するかを調べる。
+                _, target_angle = arm.get_inverse_kinematics([x, y, z, roll, pitch, yaw]) #Inverse Kinematicsで、座標から7つそれぞれのモーターの角度を計算する
+        
+                arm.set_servo_angle_j(angles=target_angle, speed=speed) # モーターの角度を指定して操作する。
+
+        if keyboard.is_pressed('up'): #上矢印キーが押されたときの処理
+           print("down key pressed")
+           _,current_position = arm.get_position() #現在のアームの位置を取得する。 return: [x,y,z,roll,pitch,yaw]
+           x,y,z,roll,pitch,yaw = current_position #展開して各変数に代入する。
+           z += 5 
+           if CheckIfNewPositionInWorkspace(x,y,z): #新しい値がworkspaceに存在するかを調べる。
+                _, target_angle = arm.get_inverse_kinematics([x, y, z, roll, pitch, yaw]) #Inverse Kinematicsで、座標から7つそれぞれのモーターの角度を計算する
+        
+                arm.set_servo_angle_j(angles=target_angle, speed=speed) # モーターの角度を指定して操作する。
      
         if keyboard.is_pressed('w'): # wキーが押されたときの処理
             print("w key pressed")
+            _,current_position = arm.get_position() #現在のアームの位置を取得する。 return: [x,y,z,roll,pitch,yaw]
+            x,y,z,roll,pitch,yaw = current_position #展開して各変数に代入する。
+            x += 5 
+            if CheckIfNewPositionInWorkspace(x,y,z): #新しい値がworkspaceに存在するかを調べる。
+                _, target_angle = arm.get_inverse_kinematics([x, y, z, roll, pitch, yaw]) #Inverse Kinematicsで、座標から7つそれぞれのモーターの角度を計算する
+        
+                arm.set_servo_angle_j(angles=target_angle, speed=speed) # モーターの角度を指定して操作する。
+
+        if keyboard.is_pressed('s'): # sキーが押されたときの処理
+            print("w key pressed")
+            _,current_position = arm.get_position() #現在のアームの位置を取得する。 return: [x,y,z,roll,pitch,yaw]
+            x,y,z,roll,pitch,yaw = current_position #展開して各変数に代入する。
+            x -= 5 
+            if CheckIfNewPositionInWorkspace(x,y,z): #新しい値がworkspaceに存在するかを調べる。
+                _, target_angle = arm.get_inverse_kinematics([x, y, z, roll, pitch, yaw]) #Inverse Kinematicsで、座標から7つそれぞれのモーターの角度を計算する
+        
+                arm.set_servo_angle_j(angles=target_angle, speed=speed) # モーターの角度を指定して操作する。
+
+        if keyboard.is_pressed('a'): # aキーが押されたときの処理
+            print("w key pressed")
+            _,current_position = arm.get_position() #現在のアームの位置を取得する。 return: [x,y,z,roll,pitch,yaw]
+            x,y,z,roll,pitch,yaw = current_position #展開して各変数に代入する。
+            y -= 5 
+            if CheckIfNewPositionInWorkspace(x,y,z): #新しい値がworkspaceに存在するかを調べる。
+                _, target_angle = arm.get_inverse_kinematics([x, y, z, roll, pitch, yaw]) #Inverse Kinematicsで、座標から7つそれぞれのモーターの角度を計算する
+        
+                arm.set_servo_angle_j(angles=target_angle, speed=speed) # モーターの角度を指定して操作する。
+
+        if keyboard.is_pressed('d'): # dキーが押されたときの処理
+            print("w key pressed")
+            _,current_position = arm.get_position() #現在のアームの位置を取得する。 return: [x,y,z,roll,pitch,yaw]
+            x,y,z,roll,pitch,yaw = current_position #展開して各変数に代入する。
+            y += 5 
+            if CheckIfNewPositionInWorkspace(x,y,z): #新しい値がworkspaceに存在するかを調べる。
+                _, target_angle = arm.get_inverse_kinematics([x, y, z, roll, pitch, yaw]) #Inverse Kinematicsで、座標から7つそれぞれのモーターの角度を計算する
+        
+                arm.set_servo_angle_j(angles=target_angle, speed=speed) # モーターの角度を指定して操作する。
+
 
         if keyboard.is_pressed('space'): # スペースキーが押されたときの処理
             print("space key pressed")
+            OperateGripper()
     
 
         if keyboard.is_pressed('esc'): # escキーが押されたときの処理

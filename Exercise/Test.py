@@ -8,8 +8,8 @@ import time
 
 while True:
 
-    if keyboard.is_pressed('up'):
-        print("up pressed")
+    if keyboard.is_pressed('d'):
+        print("d pressed")
     if keyboard.is_pressed('esc'):
         print("Exiting...")
         break
