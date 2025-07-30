@@ -45,7 +45,13 @@ def CheckIfNewPositionInWorkspace(x,y,z):
     return True
 
 
-
+def move(x,y,z):
+    if CheckIfNewPositionInWorkspace(x,y,z):
+        print("Moving")
+        arm.set_position(x,y,z, speed= speed, wait=True )
+    else: 
+        print("Position is out of workspace")
+    return
 
 
 def main():
@@ -62,18 +68,22 @@ def main():
         print("Position is out of workspace")
     
     time.sleep(1) # 移動後に1秒待つ
-
-
-    
-    time.sleep(1) # 移動後に1秒待つ
-
+    z=z+100
+    move(x,y,z)
 
     
     time.sleep(1) # 移動後に1秒待つ
-
+    y=y+100
+    move(x,y,z)
+    
+    time.sleep(1) # 移動後に1秒待つ
+    z=z-100
+    move(x,y,z)
 
     
     time.sleep(1) # 移動後に1秒待つ
+    x=x-100
+    move(x,y,z)
 
 
 
