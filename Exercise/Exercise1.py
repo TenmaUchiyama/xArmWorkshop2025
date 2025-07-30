@@ -60,20 +60,47 @@ def main():
         arm.set_position(x,y,z, speed= speed, wait=True )
     else: 
         print("Position is out of workspace")
-    
+
     time.sleep(1) # 移動後に1秒待つ
 
 
-    
-    time.sleep(1) # 移動後に1秒待つ
-
-
-    
-    time.sleep(1) # 移動後に1秒待つ
-
+    x = 500
+    y = -100 
+    z = 300
+    if CheckIfNewPositionInWorkspace(x,y,z): #新しい値がworkspaceに存在するかを調べる。
+        arm.set_position(x,y,z, speed= speed, wait=True ) #ポジションを指定する。
 
     
     time.sleep(1) # 移動後に1秒待つ
+    
+    
+    x = 400
+    y = -100 
+    z = 300
+    if CheckIfNewPositionInWorkspace(x,y,z): #新しい値がworkspaceに存在するかを調べる。
+        arm.set_position(x,y,z, speed= speed, wait=True ) #ポジションを指定する。
+
+
+    
+    time.sleep(1) # 移動後に1秒待つ
+    
+    
+    x = 400
+    y = -100 
+    z = 200
+    if CheckIfNewPositionInWorkspace(x,y,z): #新しい値がworkspaceに存在するかを調べる。
+        arm.set_position(x,y,z, speed= speed, wait=True ) #ポジションを指定する。
+
+
+    time.sleep(1) # 移動後に1秒待つ
+
+
+    x = 500
+    y = -100 
+    z = 200
+    if CheckIfNewPositionInWorkspace(x,y,z): #新しい値がworkspaceに存在するかを調べる。
+        arm.set_position(x,y,z, speed= speed, wait=True ) #ポジションを指定する。
+
 
 
 
