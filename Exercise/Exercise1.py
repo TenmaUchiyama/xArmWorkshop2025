@@ -63,14 +63,43 @@ def main():
     
     time.sleep(1) # 移動後に1秒待つ
 
+    z += 100
+    if CheckIfNewPositionInWorkspace(x,y,z):
+        print("Moving")
+        arm.set_position(x,y,z, speed= speed, wait=True )
+    else: 
+        print("Position is out of workspace")
+
+    time.sleep(1)
+
+    y += 100
+    if CheckIfNewPositionInWorkspace(x,y,z):
+        print("Moving")
+        arm.set_position(x,y,z, speed= speed, wait=True )
+    else: 
+        print("Position is out of workspace")
+    
 
     
     time.sleep(1) # 移動後に1秒待つ
-
+    z -= 100
+    if CheckIfNewPositionInWorkspace(x,y,z):
+        print("Moving")
+        arm.set_position(x,y,z, speed= speed, wait=True )
+    else: 
+        print("Position is out of workspace")
+    
 
     
     time.sleep(1) # 移動後に1秒待つ
-
+    
+    x -= 100
+    if CheckIfNewPositionInWorkspace(x,y,z):
+        print("Moving")
+        arm.set_position(x,y,z, speed= speed, wait=True )
+    else: 
+        print("Position is out of workspace")
+    
 
     
     time.sleep(1) # 移動後に1秒待つ
