@@ -103,7 +103,7 @@ def main():
 
         if keyboard.is_pressed('s'): # sキーが押されたときの処理
             print("s key pressed")
-            SetPosition(x,y-5,z,roll,pitch,yaw)
+            SetPosition(x-5,y,z,roll,pitch,yaw)
 
         if keyboard.is_pressed('a'): # aキーが押されたときの処理
             print("a key pressed")
